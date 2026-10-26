@@ -40,7 +40,7 @@ document.getElementById('reset-registration').addEventListener('click', () => {
     document.getElementById(`${name}-error`).textContent = '';
   });
   document.getElementById('password').type = 'password';
-  document.getElementById('show-password').textContent = 'Показать пароль';
+  document.getElementById('show-password').textContent = 'Показать';
   document.getElementById('show-password').setAttribute('aria-pressed', 'false');
   document.getElementById('result').textContent = '';
   document.getElementById('fullName').focus();
@@ -48,6 +48,6 @@ document.getElementById('reset-registration').addEventListener('click', () => {
 document.getElementById('show-password').addEventListener('click', event => {
   const password = document.getElementById('password');
   const show = password.type === 'password'; password.type = show ? 'text' : 'password';
-  event.currentTarget.textContent = show ? 'Скрыть пароль' : 'Показать пароль';
+  event.currentTarget.textContent = show ? 'Скрыть' : 'Показать';
   event.currentTarget.setAttribute('aria-pressed', String(show));
 });

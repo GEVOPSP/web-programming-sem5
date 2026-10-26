@@ -104,7 +104,7 @@ board.addEventListener('click', event => {
 tray.addEventListener('click', event => { if (event.target === tray) placeSticker(selectedId, 'tray'); });
 function clearZone(zone) {
   stickers.filter(s => s.zone === zone).map(s => s.id).forEach(removeSticker);
-  document.getElementById('notice').textContent = zone === 'board' ? 'Доска очищена. Входящие сохранены.' : 'Входящие очищены. Стикеры на доске сохранены.';
+  document.getElementById('notice').textContent = zone === 'board' ? 'Доска очищена.' : 'Поле очищено.';
 }
 document.getElementById('clear-tray').addEventListener('click', () => clearZone('tray'));
 document.getElementById('clear-board').addEventListener('click', () => clearZone('board'));

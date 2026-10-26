@@ -1,8 +1,38 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Открытки — учебная работа по Web-программированию">
-<title>Открытки · Практическая 4</title><link rel="icon" href="../assets/favicon.svg"><link rel="stylesheet" href="../shared.css"><link rel="stylesheet" href="../practice.css"></head>
-<body class="practice pr4"><header class="site-header"><a class="brand" href="../index.html">Практическая №4</a><a class="back" href="../index.html">Все работы</a></header>
-<main><div class="page-heading"><h1>Открытки</h1><p class="lead">Напишите поздравление, укажите отправителя и получателя. Выберите оформление и добавьте открытку в историю.</p></div>
-<div class="layout wide"><section class="panel"><h2>Новая открытка</h2><form id="card-form" novalidate class="stack"><label>Текст открытки<textarea id="card-text" placeholder="Ваше поздравление" rows="3"></textarea></label><div class="fields"><label>От кого<input id="card-from" type="text" placeholder="Ваше имя"></label><label>Кому<input id="card-to" type="text" placeholder="Имя получателя"></label></div><label>Тема открытки<select id="card-theme"><option value="linen">Бумажная</option><option value="night">Звёздная ночь</option><option value="sunset">Персиковая</option><option value="garden">Ботаническая</option><option value="winter">Зимнее утро</option></select></label><button id="send" class="primary" type="submit" disabled>Отправить</button><div id="card-status" class="status-line" role="status"></div></form></section><section class="panel"><h2 class="preview-title">Предпросмотр</h2><div id="preview" class="postcard theme-linen"><small id="preview-to">Для вас</small><p id="preview-text">Текст поздравления</p><small id="preview-from">Отправитель</small></div><p class="board-note">Выбранное оформление сохранится вместе с открыткой.</p></section></div><section style="margin-top:34px"><div class="between"><h2>История открыток <span id="history-count" class="count">0</span></h2><button id="clear-history" class="quiet small danger">Очистить историю</button></div><p class="hint">Открытки сохраняются в этом браузере и остаются после обновления страницы.</p><div id="history" class="postcard-history"></div><div id="history-empty" class="empty">Первая открытка появится здесь после отправки.</div></section></main>
-<footer>Голубев Егор Витальевич <span>3-ТИД-10 · подгруппа 2</span></footer><script src="app.js"></script></body></html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Открытки</title>
+  <link rel="stylesheet" href="../practice.css?v=20261026-simple1">
+</head>
+<body class="practice pr4">
+
+<main class="cards-page">
+  <h1>Сделать открытку</h1>
+  <div class="card-maker">
+    <form id="card-form" novalidate>
+      <label for="card-text">Поздравление</label>
+      <textarea id="card-text" rows="4" placeholder="Напиши что-нибудь хорошее"></textarea>
+      <div class="names-row">
+        <div><label for="card-from">От кого</label><input id="card-from" type="text"></div>
+        <div><label for="card-to">Кому</label><input id="card-to" type="text"></div>
+      </div>
+      <label for="card-theme">Оформление</label>
+      <select id="card-theme"><option value="linen">Светлая</option><option value="night">Ночная</option><option value="sunset">Розовая</option><option value="garden">Зелёная</option><option value="winter">Зимняя</option></select>
+      <button id="send" type="submit" disabled>Отправить</button>
+      <p id="card-status" class="status-line" role="status"></p>
+    </form>
+    <div id="preview" class="postcard theme-linen"><small id="preview-to">Кому</small><p id="preview-text">Текст поздравления</p><small id="preview-from">От кого</small></div>
+  </div>
+  <section class="saved-cards">
+    <h2>Сохранённые открытки <span id="history-count" class="count">0</span></h2>
+    <button id="clear-history" class="clear">Очистить историю</button>
+    <div id="history" class="postcard-history"></div>
+    <p id="history-empty">Здесь пока пусто.</p>
+  </section>
+  <p class="back-link"><a href="../">Все работы</a></p>
+</main>
+  <script src="app.js?v=20261026-simple1"></script>
+</body>
+</html>

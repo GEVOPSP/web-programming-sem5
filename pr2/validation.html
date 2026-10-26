@@ -1,8 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Регистрация в клубе — учебная работа по Web-программированию">
-<title>Регистрация в клубе · Практическая 2</title><link rel="icon" href="../assets/favicon.svg"><link rel="stylesheet" href="../shared.css"><link rel="stylesheet" href="../practice.css"></head>
-<body class="practice pr2"><header class="site-header"><a class="brand" href="../index.html">Практическая №2</a><a class="back" href="../index.html">Все работы</a></header>
-<main><div class="page-heading"><h1>Регистрация в клубе</h1><p class="lead">Клуб настольных игр. Участие для игроков от 18 лет.</p></div>
-<div class="layout wide"><section class="panel"><h2>Данные участника</h2><form id="registration" novalidate><div class="fields"><label class="full">Фамилия, имя, отчество<input id="fullName" type="text" autocomplete="name" aria-describedby="fullName-help fullName-error"><small id="fullName-help">Латиница или кириллица, допускаются только буквы и пробелы.</small><div id="fullName-error" class="error" aria-live="polite"></div></label><label class="full">Логин<input id="login" type="text" autocomplete="username" aria-describedby="login-help login-error"><small id="login-help">От 15 символов: строчные и заглавные латинские буквы, минимум 3 цифры и 1 спецсимвол. Без пробелов.</small><div id="login-error" class="error" aria-live="polite"></div></label><label>Email<input id="email" type="text" inputmode="email" autocomplete="email" aria-describedby="email-error"><div id="email-error" class="error" aria-live="polite"></div></label><label>Возраст<input id="age" type="text" inputmode="numeric" autocomplete="off" aria-describedby="age-help age-error"><small id="age-help">От 18 до 120 лет.</small><div id="age-error" class="error" aria-live="polite"></div></label><label class="full">Пароль<input id="password" type="password" autocomplete="new-password" aria-describedby="password-help password-error"><small id="password-help">От 15 символов: строчные и заглавные кириллические буквы, минимум 3 цифры и 1 спецсимвол. Без латиницы и пробелов.</small><div id="password-error" class="error" aria-live="polite"></div></label></div><div class="row"><button type="submit" class="primary">Зарегистрироваться</button><button type="button" id="show-password" aria-pressed="false">Показать пароль</button></div><div id="result" class="status-line" role="status"></div><button id="reset-registration" class="quiet small" type="button">Очистить форму</button><p class="form-footnote">Учебная форма. Введённые данные и пароль не сохраняются.</p></form></section></div></main>
-<footer>Голубев Егор Витальевич <span>3-ТИД-10 · подгруппа 2</span></footer><script src="app.js"></script></body></html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Регистрация</title>
+  <link rel="stylesheet" href="../practice.css?v=20261026-simple1">
+</head>
+<body class="practice pr2">
+
+<main class="registration">
+  <h1>Регистрация</h1>
+  <p class="club">Клуб настольных игр</p>
+  <form id="registration" novalidate>
+    <div class="field">
+      <label for="fullName">ФИО</label>
+      <input id="fullName" type="text" autocomplete="name" placeholder="Фамилия Имя Отчество" aria-describedby="fullName-help fullName-error">
+      <small id="fullName-help">Буквы и пробелы.</small>
+      <div id="fullName-error" class="error" aria-live="polite"></div>
+    </div>
+    <div class="field">
+      <label for="login">Логин</label>
+      <input id="login" type="text" autocomplete="username" aria-describedby="login-help login-error">
+      <small id="login-help">Латиница, оба регистра, от 15 знаков. Не меньше 3 цифр и спецсимвола.</small>
+      <div id="login-error" class="error" aria-live="polite"></div>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="text" inputmode="email" autocomplete="email" placeholder="name@mail.ru" aria-describedby="email-error">
+      <div id="email-error" class="error" aria-live="polite"></div>
+    </div>
+    <div class="field">
+      <label for="age">Возраст</label>
+      <input id="age" class="age" type="text" inputmode="numeric" aria-describedby="age-help age-error">
+      <small id="age-help">Для участников от 18 лет.</small>
+      <div id="age-error" class="error" aria-live="polite"></div>
+    </div>
+    <div class="field">
+      <label for="password">Пароль</label>
+      <div class="password-line"><input id="password" type="password" autocomplete="new-password" aria-describedby="password-help password-error"><button type="button" id="show-password" aria-label="Показать или скрыть пароль" aria-pressed="false">Показать</button></div>
+      <small id="password-help">Как логин, только буквы кириллицей.</small>
+      <div id="password-error" class="error" aria-live="polite"></div>
+    </div>
+    <div class="form-buttons"><button type="submit" class="submit">Зарегистрироваться</button><button type="button" id="reset-registration">Очистить</button></div>
+    <p id="result" class="status-line" role="status"></p>
+  </form>
+  <a class="registration-back" href="../">Все работы</a>
+</main>
+  <script src="app.js?v=20261026-simple1"></script>
+</body>
+</html>

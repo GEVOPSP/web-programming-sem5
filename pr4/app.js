@@ -25,8 +25,8 @@ function persist(nextCards) {
 function preview() {
   document.getElementById('preview').className = `postcard theme-${themeInput.value}`;
   document.getElementById('preview-text').textContent = textInput.value.trim() || 'Текст поздравления';
-  document.getElementById('preview-from').textContent = fromInput.value.trim() ? `От ${fromInput.value.trim()}` : 'Отправитель';
-  document.getElementById('preview-to').textContent = toInput.value.trim() ? `Для ${toInput.value.trim()}` : 'Для вас';
+  document.getElementById('preview-from').textContent = fromInput.value.trim() ? `От ${fromInput.value.trim()}` : 'От кого';
+  document.getElementById('preview-to').textContent = toInput.value.trim() ? `Для ${toInput.value.trim()}` : 'Кому';
   document.getElementById('send').disabled = ![textInput, fromInput, toInput].every(input => input.value.trim());
 }
 
@@ -54,7 +54,7 @@ document.getElementById('card-form').addEventListener('submit', event => {
   event.preventDefault(); if (![textInput, fromInput, toInput].every(input => input.value.trim())) return;
   const card = { id: crypto.randomUUID(), text: textInput.value.trim(), from: fromInput.value.trim(), to: toInput.value.trim(), theme: themeInput.value };
   if (!persist([...cards, card])) return;
-  renderHistory(); status.textContent = 'Открытка сохранена в коллекции.';
+  renderHistory(); status.textContent = 'Открытка сохранена.';
   textInput.value = ''; fromInput.value = ''; toInput.value = ''; preview();
 });
 document.getElementById('clear-history').addEventListener('click', () => {
