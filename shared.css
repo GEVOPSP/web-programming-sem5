@@ -171,43 +171,6 @@ p {
   color: var(--accent);
   margin-bottom: 14px;
 }
-.lead {
-  color: var(--muted);
-  max-width: 760px;
-  font-size: 16px;
-}
-.site-header {
-  max-width: 1200px;
-  margin: auto;
-  padding: 26px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-}
-.brand {
-  text-decoration: none;
-  display: flex;
-  gap: 11px;
-  align-items: center;
-  font-weight: 650;
-  letter-spacing: -0.4px;
-}
-.brand-icon {
-  background: var(--ink);
-  color: white;
-  font-size: 17px;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-}
-.back {
-  text-decoration: none;
-  font-size: 14px;
-  color: var(--muted);
-}
 main {
   max-width: 1200px;
   padding: 38px 30px 50px;
@@ -399,9 +362,6 @@ nav.tabs a:hover {
   }
 }
 @media (max-width: 540px) {
-  .site-header {
-    padding: 19px 18px;
-  }
   main {
     padding: 28px 18px;
   }

@@ -103,10 +103,6 @@ a:hover {
 .status-line:empty {
   display: none;
 }
-.back-link {
-  font-size: 13px;
-  margin: 30px 0 0;
-}
 [aria-invalid='true'] {
   border-color: #b85a4c;
 }
@@ -330,9 +326,6 @@ a:hover {
   font-size: 14px;
   background: #1c2c42;
 }
-.pr1 .back-link a {
-  color: #aabdd0;
-}
 .drag-over {
   outline: 2px dashed #779d83;
   outline-offset: -4px;
@@ -418,12 +411,6 @@ a:hover {
 }
 .form-buttons .submit:hover {
   background: #355d76;
-}
-.registration-back {
-  display: inline-block;
-  font-size: 12px;
-  color: #777;
-  margin-top: 22px;
 }
 
 /* Стикеры */
@@ -533,9 +520,6 @@ a:hover {
   color: #666;
   background: #fafafa;
   border-color: #bbb;
-}
-.notes .back-link {
-  margin-top: 25px;
 }
 
 /* Открытки */
