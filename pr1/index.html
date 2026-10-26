@@ -1,31 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Космическая бродилка</title>
-  <link rel="stylesheet" href="../practice.css?v=20261026-simple1">
-</head>
-<body class="practice pr1">
-
-<main class="game">
-  <h1>Космическая бродилка</h1>
-  <div class="game-layout">
-    <aside class="players">
-      <h2>Выбери фишку</h2>
-      <div id="shelf" class="token-shelf" role="button" tabindex="0" aria-label="Вернуть выбранную фишку"></div>
-      <p id="active-player" class="active-player" aria-live="polite"></p>
-      <div class="dice-row"><div id="dice" class="dice" aria-live="polite">—</div><button id="roll">Бросить кубик</button></div>
-      <button id="reset" class="reset">Начать заново</button>
-    </aside>
-    <section class="route">
-      <div id="board" class="game-grid" aria-label="Игровое поле"></div>
-      <p class="game-help">Перетащи фишку на клетку или выбери её нажатием. Маршрут идёт по стрелкам.</p>
-    </section>
-  </div>
-  <p id="event" class="message" role="status">Для начала выбери фишку.</p>
-  <p class="back-link"><a href="../">← К работам</a></p>
-</main>
-  <script src="app.js?v=20261026-simple1"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Космическая бродилка</title>
+    <link rel="stylesheet" href="../practice.css?v=20261026-code1" />
+  </head>
+  <body class="practice pr1">
+    <main class="game">
+      <h1>Космическая бродилка</h1>
+      <div class="game-layout">
+        <aside class="players">
+          <h2>Выбери фишку</h2>
+          <div
+            id="shelf"
+            class="token-shelf"
+            role="button"
+            tabindex="0"
+            aria-label="Вернуть выбранную фишку"
+          ></div>
+          <p id="active-player" class="active-player" aria-live="polite"></p>
+          <div class="dice-row">
+            <div id="dice" class="dice" aria-live="polite">—</div>
+            <button id="roll">Бросить кубик</button>
+          </div>
+          <button id="reset" class="reset">Начать заново</button>
+        </aside>
+        <section class="route">
+          <div id="board" class="game-grid" aria-label="Игровое поле"></div>
+          <p class="game-help">
+            Перетащи фишку на клетку или выбери её нажатием. Маршрут идёт по стрелкам.
+          </p>
+        </section>
+      </div>
+      <p id="event" class="message" role="status">Для начала выбери фишку.</p>
+      <p class="back-link"><a href="../">← К работам</a></p>
+    </main>
+    <script src="app.js?v=20261026-code1"></script>
+  </body>
 </html>

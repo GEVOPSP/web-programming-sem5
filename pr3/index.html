@@ -1,35 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Стикеры</title>
-  <link rel="stylesheet" href="../practice.css?v=20261026-simple1">
-</head>
-<body class="practice pr3">
-
-<main class="notes">
-  <h1>Мои стикеры</h1>
-  <form id="sticker-form" class="add-note" novalidate>
-    <input id="sticker-text" type="text" aria-label="Текст стикера" placeholder="Что нужно записать?" aria-describedby="input-error">
-    <button type="submit">Добавить</button>
-  </form>
-  <div id="input-error" class="error" role="status"></div>
-  <div class="notes-layout">
-    <section>
-      <h2>Стикеры <span id="tray-count" class="count">0</span></h2>
-      <div id="tray" class="sticker-tray" aria-label="Поле со стикерами"></div>
-      <button id="clear-tray" class="clear">Очистить поле</button>
-    </section>
-    <section>
-      <h2>Доска <span id="board-count" class="count">0</span></h2>
-      <div id="pinboard" class="pinboard" aria-label="Доска со свободным расположением стикеров"><div id="board-placeholder" class="pinboard-caption">Сюда можно перетаскивать стикеры</div></div>
-      <button id="clear-board" class="clear">Очистить доску</button>
-    </section>
-  </div>
-  <p id="notice" class="status-line" role="status"></p>
-  <p class="back-link"><a href="../">К остальным работам</a></p>
-</main>
-  <script src="app.js?v=20261026-simple1"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Стикеры</title>
+    <link rel="stylesheet" href="../practice.css?v=20261026-code1" />
+  </head>
+  <body class="practice pr3">
+    <main class="notes">
+      <h1>Мои стикеры</h1>
+      <form id="sticker-form" class="add-note" novalidate>
+        <input
+          id="sticker-text"
+          type="text"
+          aria-label="Текст стикера"
+          placeholder="Что нужно записать?"
+          aria-describedby="input-error"
+        />
+        <button type="submit">Добавить</button>
+      </form>
+      <div id="input-error" class="error" role="status"></div>
+      <div class="notes-layout">
+        <section>
+          <h2>Стикеры <span id="tray-count" class="count">0</span></h2>
+          <div id="tray" class="sticker-tray" aria-label="Поле со стикерами"></div>
+          <button id="clear-tray" class="clear">Очистить поле</button>
+        </section>
+        <section>
+          <h2>Доска <span id="board-count" class="count">0</span></h2>
+          <div
+            id="pinboard"
+            class="pinboard"
+            aria-label="Доска со свободным расположением стикеров"
+          >
+            <div id="board-placeholder" class="pinboard-caption">
+              Сюда можно перетаскивать стикеры
+            </div>
+          </div>
+          <button id="clear-board" class="clear">Очистить доску</button>
+        </section>
+      </div>
+      <p id="notice" class="status-line" role="status"></p>
+      <p class="back-link"><a href="../">К остальным работам</a></p>
+    </main>
+    <script src="app.js?v=20261026-code1"></script>
+  </body>
 </html>
