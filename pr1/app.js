@@ -1,59 +1,63 @@
-'use strict';
-
-// Состояние отделено от DOM: каждая фишка знает свою клетку и пропуск хода.
+// фишки игроков: cell - номер клетки (null - фишка ещё в области фишек),
+// skip - нужно ли пропустить следующий бросок кубика
 const players = [
   { id: 'earth', name: 'Земля', image: 'earth.jpg', cell: null, skip: false },
   { id: 'moon', name: 'Луна', image: 'moon.jpg', cell: null, skip: false },
   { id: 'saturn', name: 'Сатурн', image: 'saturn.jpg', cell: null, skip: false }
 ];
+
+// клетки поля: [название, эффект]
+// эффекты: forward - на 2 вперёд, back - на 2 назад, skip - пропуск хода, goal - финиш
 const spaces = [
-  ['Космодром · старт', 'start'],
+  ['Старт', 'start'],
   ['Первая орбита', ''],
-  ['Попутный ветер · +2', 'forward'],
-  ['Метеорный поток', ''],
-  ['Ремонт · пропуск хода', 'skip'],
+  ['Попутный ветер: +2 клетки', 'forward'],
+  ['Метеоритный поток', ''],
   ['Тихий космос', ''],
-  ['Солнечный ветер · −2', 'back'],
+  ['Ремонт: пропуск хода', 'skip'],
+  ['Солнечный ветер: −2 клетки', 'back'],
   ['Лунная станция', ''],
   ['Звёздный свет', ''],
   ['Дальняя орбита', ''],
   ['Последний рывок', ''],
-  ['Новая галактика · финиш', 'goal']
+  ['Финиш', 'goal']
 ];
-let selected = null;
+
+let selected = null; // id выбранной фишки
 const board = document.getElementById('board');
 const shelf = document.getElementById('shelf');
 const message = document.getElementById('event');
 
+// выбор фишки (кликом или при начале перетаскивания)
 function selectPlayer(id) {
   selected = id;
   const player = players.find((p) => p.id === id);
   document.getElementById('active-player').textContent = player
     ? `Выбрана фишка: ${player.name}`
     : 'Фишка не выбрана';
+  // подсвечиваем выбранную фишку
   document.querySelectorAll('.token').forEach((token) => {
     token.classList.toggle('selected', token.dataset.id === id);
-    token.setAttribute('aria-pressed', String(token.dataset.id === id));
   });
 }
 
+// создаём элемент фишки с картинкой
 function makeToken(player) {
   const token = document.createElement('div');
   token.className = 'token';
   token.dataset.id = player.id;
-  token.draggable = true;
+  token.draggable = true; // разрешаем перетаскивание
   token.tabIndex = 0;
-  token.setAttribute('role', 'button');
-  token.setAttribute('aria-label', `Выбрать фишку ${player.name}`);
   const image = document.createElement('img');
   image.src = `../assets/${player.image}`;
   image.alt = '';
-  image.draggable = false;
+  image.draggable = false; // тащим всю фишку, а не саму картинку
   const text = document.createElement('span');
   text.textContent = player.name;
   token.append(image, text);
+
   token.addEventListener('click', (event) => {
-    event.stopPropagation();
+    event.stopPropagation(); // чтобы клик не дошёл до клетки под фишкой
     selectPlayer(player.id);
   });
   token.addEventListener('keydown', (event) => {
@@ -63,7 +67,7 @@ function makeToken(player) {
       selectPlayer(player.id);
     }
   });
-  // dataTransfer содержит только ID, а не HTML перетаскиваемого объекта.
+  // при начале перетаскивания запоминаем id фишки
   token.addEventListener('dragstart', (event) => {
     selectPlayer(player.id);
     event.dataTransfer.setData('text/plain', player.id);
@@ -72,26 +76,31 @@ function makeToken(player) {
   return token;
 }
 
+// рисуем поле и область фишек заново по данным из массивов
 function render() {
-  board.replaceChildren();
-  shelf.replaceChildren();
+  board.innerHTML = '';
+  shelf.innerHTML = '';
   spaces.forEach(([name, effect], index) => {
     const cell = document.createElement('div');
-    cell.className = `cell ${effect ? 'special' : ''} ${effect === 'goal' ? 'goal' : ''}`;
+    cell.className = 'cell';
+    if (effect) cell.classList.add('special');
+    if (effect === 'goal') cell.classList.add('goal');
     cell.dataset.cell = index;
     cell.tabIndex = 0;
-    cell.setAttribute('role', 'button');
-    cell.setAttribute('aria-label', `Клетка ${index + 1}: ${name}`);
+
     const number = document.createElement('span');
     number.className = 'cell-number';
-    number.textContent = String(index + 1).padStart(2, '0');
+    number.textContent = index + 1;
     const title = document.createElement('strong');
     title.textContent = name;
+    // фишки, которые стоят на этой клетке
     const tokens = document.createElement('div');
     tokens.className = 'tokens';
     players.filter((p) => p.cell === index).forEach((p) => tokens.append(makeToken(p)));
     cell.append(number, title, tokens);
+
     enableDrop(cell, index);
+    // второй способ хода: выбрать фишку, потом нажать на клетку
     cell.addEventListener('click', () => move(selected, index));
     cell.addEventListener('keydown', (event) => {
       if (event.target === cell && (event.key === 'Enter' || event.key === ' ')) {
@@ -101,13 +110,15 @@ function render() {
     });
     board.append(cell);
   });
+  // фишки, которые ещё не на поле
   players.filter((p) => p.cell === null).forEach((p) => shelf.append(makeToken(p)));
   selectPlayer(selected);
 }
 
+// делаем элемент местом, куда можно бросить фишку
 function enableDrop(zone, index) {
   zone.addEventListener('dragover', (event) => {
-    event.preventDefault();
+    event.preventDefault(); // без этого браузер не разрешит drop
     event.dataTransfer.dropEffect = 'move';
     zone.classList.add('drag-over');
   });
@@ -121,6 +132,7 @@ function enableDrop(zone, index) {
   });
 }
 
+// перемещение фишки на клетку index (null - вернуть в область фишек)
 function move(id, index) {
   const player = players.find((p) => p.id === id);
   if (!player) {
@@ -128,32 +140,38 @@ function move(id, index) {
     return;
   }
   selected = id;
+
   if (index === null) {
     player.cell = null;
     player.skip = false;
-    message.textContent = `${player.name} возвращается в экипаж.`;
-  } else {
-    player.cell = index;
-    const effect = spaces[index][1];
-    let note = `${player.name}: клетка ${index + 1}, ${spaces[index][0]}.`;
-    // Эффект применяется один раз за перенос, чтобы бонусы не запускали друг друга по кругу.
-    if (effect === 'forward' || effect === 'back') {
-      player.cell = Math.max(
-        0,
-        Math.min(spaces.length - 1, index + (effect === 'forward' ? 2 : -2))
-      );
-      note += ` Перемещение на клетку ${player.cell + 1}.`;
-    }
-    if (effect === 'skip') {
-      player.skip = true;
-      note += ' Следующий бросок кубика будет пропущен.';
-    }
-    if (effect === 'goal') note += ' Путешествие завершено!';
-    message.textContent = note;
+    message.textContent = `${player.name}: фишка снята с поля.`;
+    render();
+    return;
   }
+
+  player.cell = index;
+  const effect = spaces[index][1];
+  let note = `${player.name}: клетка ${index + 1} - ${spaces[index][0]}.`;
+
+  // особые клетки: сдвиг на 2 клетки, пропуск хода, финиш
+  if (effect === 'forward' || effect === 'back') {
+    const step = effect === 'forward' ? 2 : -2;
+    // не выходим за начало и конец поля
+    player.cell = Math.max(0, Math.min(spaces.length - 1, index + step));
+    note += ` Фишка переходит на клетку ${player.cell + 1}.`;
+  }
+  if (effect === 'skip') {
+    player.skip = true;
+    note += ' Следующий бросок кубика пропускается.';
+  }
+  if (effect === 'goal') {
+    note += ' Путешествие завершено!';
+  }
+  message.textContent = note;
   render();
 }
 
+// область фишек тоже принимает фишки (вернуть фишку с поля)
 enableDrop(shelf, null);
 shelf.addEventListener('click', (event) => {
   if (event.target === shelf && selected) move(selected, null);
@@ -164,6 +182,8 @@ shelf.addEventListener('keydown', (event) => {
     move(selected, null);
   }
 });
+
+// кубик: случайное число от 1 до 6, выбранная фишка идёт вперёд на столько клеток
 document.getElementById('roll').addEventListener('click', () => {
   const player = players.find((p) => p.id === selected);
   if (!player) {
@@ -177,8 +197,12 @@ document.getElementById('roll').addEventListener('click', () => {
   }
   const value = Math.floor(Math.random() * 6) + 1;
   document.getElementById('dice').textContent = value;
-  move(player.id, Math.min(spaces.length - 1, (player.cell ?? -1) + value));
+  // фишка из области фишек начинает с позиции -1, то есть перед первой клеткой
+  const from = player.cell === null ? -1 : player.cell;
+  move(player.id, Math.min(spaces.length - 1, from + value));
 });
+
+// начать игру заново: все фишки возвращаются в область фишек
 document.getElementById('reset').addEventListener('click', () => {
   players.forEach((p) => {
     p.cell = null;
@@ -186,10 +210,13 @@ document.getElementById('reset').addEventListener('click', () => {
   });
   selected = null;
   document.getElementById('dice').textContent = '—';
-  message.textContent = 'Новый маршрут. Выберите фишку.';
+  message.textContent = 'Новая игра. Выберите фишку.';
   render();
 });
+
+// убираем подсветку, если перетаскивание отменили
 document.addEventListener('dragend', () =>
   document.querySelectorAll('.drag-over').forEach((el) => el.classList.remove('drag-over'))
 );
+
 render();

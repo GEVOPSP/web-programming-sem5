@@ -1,133 +1,161 @@
-'use strict';
-
+// ключ в localStorage, под которым хранится массив открыток
 const STORAGE_KEY = 'gev-web-pr4-cards-v1';
+// названия тем (это части CSS-классов theme-...)
 const themes = ['linen', 'night', 'sunset', 'garden', 'winter'];
+
+// находим элементы формы
 const textInput = document.getElementById('card-text');
 const fromInput = document.getElementById('card-from');
 const toInput = document.getElementById('card-to');
 const themeInput = document.getElementById('card-theme');
-const status = document.getElementById('card-status');
-let cards = [];
+const sendButton = document.getElementById('send');
+const statusText = document.getElementById('card-status');
 
+let cards = []; // все сохранённые открытки
+
+// читаем открытки из localStorage
 function readCards() {
   try {
-    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    if (!Array.isArray(value)) throw new Error('Invalid data');
-    return value.filter(
-      (c) =>
-        c &&
-        typeof c.id === 'string' &&
-        typeof c.text === 'string' &&
-        typeof c.from === 'string' &&
-        typeof c.to === 'string' &&
-        themes.includes(c.theme)
-    );
-  } catch {
-    status.textContent =
-      'Не удалось прочитать историю. Проверьте доступ к хранилищу браузера.';
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    if (!Array.isArray(saved)) {
+      return [];
+    }
+    // оставляем только записи, у которых есть все нужные поля
+    return saved.filter(function (card) {
+      return (
+        card &&
+        typeof card.id === 'string' &&
+        typeof card.text === 'string' &&
+        typeof card.from === 'string' &&
+        typeof card.to === 'string' &&
+        themes.includes(card.theme)
+      );
+    });
+  } catch (error) {
+    statusText.textContent = 'Не удалось прочитать сохранённые открытки.';
     return [];
   }
 }
 
-function persist(nextCards) {
+// сохраняем массив открыток в localStorage
+function saveCards(newCards) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextCards));
-    cards = nextCards;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newCards));
+    cards = newCards;
     return true;
-  } catch {
-    status.textContent =
-      'Не удалось сохранить открытки. Возможно, хранилище заполнено или недоступно.';
+  } catch (error) {
+    statusText.textContent = 'Не удалось сохранить открытку.';
     return false;
   }
 }
 
-function preview() {
-  document.getElementById('preview').className = `postcard theme-${themeInput.value}`;
-  document.getElementById('preview-text').textContent =
-    textInput.value.trim() || 'Текст поздравления';
-  document.getElementById('preview-from').textContent = fromInput.value.trim()
-    ? `От ${fromInput.value.trim()}`
-    : 'От кого';
-  document.getElementById('preview-to').textContent = toInput.value.trim()
-    ? `Для ${toInput.value.trim()}`
-    : 'Кому';
-  document.getElementById('send').disabled = ![textInput, fromInput, toInput].every((input) =>
-    input.value.trim()
-  );
+// проверка: все три поля заполнены (пробелы не считаются)
+function allFilled() {
+  return textInput.value.trim() !== '' && fromInput.value.trim() !== '' && toInput.value.trim() !== '';
 }
 
+// обновляем предпросмотр и включаем кнопку, только когда всё заполнено
+function preview() {
+  document.getElementById('preview').className = 'postcard theme-' + themeInput.value;
+  document.getElementById('preview-text').textContent = textInput.value.trim() || 'Текст поздравления';
+  document.getElementById('preview-to').textContent = 'Кому: ' + (toInput.value.trim() || '...');
+  document.getElementById('preview-from').textContent = 'От: ' + (fromInput.value.trim() || '...');
+  sendButton.disabled = !allFilled();
+}
+
+// создаём одну открытку для истории
+function createCard(card) {
+  const wrapper = document.createElement('article');
+  wrapper.className = 'history-item';
+
+  const postcard = document.createElement('div');
+  postcard.className = 'postcard theme-' + card.theme;
+  // текст вставляем через textContent, чтобы введённые теги не выполнялись
+  const to = document.createElement('small');
+  to.textContent = 'Кому: ' + card.to;
+  const text = document.createElement('p');
+  text.textContent = card.text;
+  const from = document.createElement('small');
+  from.textContent = 'От: ' + card.from;
+  postcard.append(to, text, from);
+
+  // кнопка удаления только этой открытки
+  const remove = document.createElement('button');
+  remove.textContent = 'Удалить';
+  remove.addEventListener('click', function () {
+    const rest = cards.filter(function (item) {
+      return item.id !== card.id;
+    });
+    if (saveCards(rest)) {
+      renderHistory();
+      statusText.textContent = 'Открытка удалена.';
+    }
+  });
+
+  wrapper.append(postcard, remove);
+  return wrapper;
+}
+
+// выводим историю: новые открытки сверху
 function renderHistory() {
   const container = document.getElementById('history');
-  container.replaceChildren();
-  cards
-    .slice()
-    .reverse()
-    .forEach((card) => {
-      const wrapper = document.createElement('article');
-      wrapper.className = 'history-item';
-      const element = document.createElement('div');
-      element.className = `postcard theme-${card.theme}`;
-      // Пользовательский текст вставляется через textContent: HTML-теги не выполняются.
-      const to = document.createElement('small');
-      to.textContent = `Для ${card.to}`;
-      const text = document.createElement('p');
-      text.textContent = card.text;
-      const from = document.createElement('small');
-      from.textContent = `От ${card.from}`;
-      element.append(to, text, from);
-      const remove = document.createElement('button');
-      remove.textContent = 'Удалить';
-      remove.className = 'danger';
-      remove.setAttribute('aria-label', `Удалить открытку для ${card.to}`);
-      remove.addEventListener('click', () => {
-        if (persist(cards.filter((c) => c.id !== card.id))) {
-          renderHistory();
-          status.textContent = 'Открытка удалена.';
-        }
-      });
-      wrapper.append(element, remove);
-      container.append(wrapper);
-    });
+  container.innerHTML = '';
+  for (let i = cards.length - 1; i >= 0; i--) {
+    container.append(createCard(cards[i]));
+  }
   document.getElementById('history-count').textContent = cards.length;
   document.getElementById('history-empty').hidden = cards.length > 0;
   document.getElementById('clear-history').disabled = cards.length === 0;
 }
 
-[textInput, fromInput, toInput, themeInput].forEach((input) =>
-  input.addEventListener('input', preview)
-);
-document.getElementById('card-form').addEventListener('submit', (event) => {
+// предпросмотр обновляется при любом вводе и при смене темы
+[textInput, fromInput, toInput, themeInput].forEach(function (input) {
+  input.addEventListener('input', preview);
+});
+
+// отправка: сохраняем открытку в историю и очищаем поля
+document.getElementById('card-form').addEventListener('submit', function (event) {
   event.preventDefault();
-  if (![textInput, fromInput, toInput].every((input) => input.value.trim())) return;
+  if (!allFilled()) {
+    return;
+  }
   const card = {
-    id: crypto.randomUUID(),
+    id: String(Date.now()),
     text: textInput.value.trim(),
     from: fromInput.value.trim(),
     to: toInput.value.trim(),
     theme: themeInput.value
   };
-  if (!persist([...cards, card])) return;
+  if (!saveCards(cards.concat(card))) {
+    return;
+  }
   renderHistory();
-  status.textContent = 'Открытка сохранена.';
+  statusText.textContent = 'Открытка отправлена в историю.';
   textInput.value = '';
   fromInput.value = '';
   toInput.value = '';
   preview();
 });
-document.getElementById('clear-history').addEventListener('click', () => {
-  if (!confirm('Удалить все сохранённые открытки?')) return;
-  if (persist([])) {
+
+document.getElementById('clear-history').addEventListener('click', function () {
+  if (!confirm('Удалить все сохранённые открытки?')) {
+    return;
+  }
+  if (saveCards([])) {
     renderHistory();
-    status.textContent = 'История очищена.';
+    statusText.textContent = 'История очищена.';
   }
 });
-// Событие storage обновляет коллекцию в другой вкладке того же сайта.
-window.addEventListener('storage', (event) => {
+
+// если открытки изменили в другой вкладке, обновляем историю и здесь
+window.addEventListener('storage', function (event) {
   if (event.key === STORAGE_KEY || event.key === null) {
     cards = readCards();
     renderHistory();
   }
 });
+
+// при открытии страницы загружаем сохранённые открытки
 cards = readCards();
 preview();
 renderHistory();

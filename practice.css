@@ -608,44 +608,57 @@ a:hover {
 .postcard small:last-child {
   text-align: right;
 }
+.postcard small:first-child {
+  padding-right: 110px;
+}
+/* Темы открытки. Украшения рисуются псевдоэлементом в правом верхнем углу */
+.postcard:before {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 30px;
+  letter-spacing: 8px;
+}
 .theme-linen {
   background: #fffdf3;
   color: #5c5039;
-  border-color: #d1c6ac;
+  border: 4px double #d1c6ac;
 }
 .theme-night {
-  background: #29374c;
+  background: linear-gradient(160deg, #1f2b40, #3b4f72);
   color: #f5f1e4;
-  background-image: radial-gradient(#d6dfd3 1px, transparent 1.2px);
-  background-size: 87px 69px;
-  border-color: #29374c;
+  border-color: #1f2b40;
+}
+.theme-night:before {
+  content: '☾ ✦';
+  color: #e9d98f;
 }
 .theme-sunset {
-  background: #f5d7d6;
+  background: linear-gradient(135deg, #fbe3d6, #f3c1c6);
   color: #7b4548;
-  border: 4px double #bb8b8b;
+  border-color: #e6a9ad;
+}
+.theme-sunset:before {
+  content: '♥';
+  color: #e08a93;
 }
 .theme-garden {
-  background: #e7eddb;
+  background: linear-gradient(180deg, #f1f6e6, #d7e7c4);
   color: #466044;
   border-color: #acb994;
-  border-left: 8px solid #a0b58d;
+}
+.theme-garden:before {
+  content: '✿ ❀';
+  color: #e2a3b5;
 }
 .theme-winter {
-  background: #e6f0f7;
-  color: #476476;
+  background: linear-gradient(180deg, #eaf3fb, #cfe2f1);
+  color: #3f5f74;
   border-color: #b0c4d5;
 }
 .theme-winter:before {
-  content: '*   *';
-  position: absolute;
-  right: 22px;
-  top: 8px;
-  font:
-    35px Georgia,
-    serif;
-  letter-spacing: 13px;
-  color: #a1b7c8;
+  content: '❄ ❅ ❆';
+  color: #8fb3cf;
 }
 .saved-cards {
   margin-top: 37px;

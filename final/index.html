@@ -1,215 +1,204 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Трекер чтения книг" />
-    <title>Трекер чтения</title>
-    <link rel="stylesheet" href="../shared.css?v=20261026-single1" />
-  </head>
-  <body>
-    <main>
-      <div class="page-heading">
-        <h1>Трекер чтения</h1>
-      </div>
-      <nav class="tabs" aria-label="Разделы приложения">
-        <a href="#books">Мои книги</a><a href="#add">Добавить книгу</a
-        ><a href="#statistics">Статистика</a>
-      </nav>
-      <section id="statistics">
-        <div class="stats">
-          <div class="stat balance">
-            <span>Прочитано страниц</span><strong id="pages-total">0</strong>
-          </div>
-          <div class="stat">
-            <span>Книг за <span id="stats-year" style="display: inline"></span> год</span
-            ><strong id="books-year">0</strong>
-          </div>
-          <div class="stat">
-            <span>Средняя оценка</span><strong id="average-rating">—</strong>
-          </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер чтения книг</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- шапка с навигацией по трём разделам -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">Трекер чтения</div>
+            <nav class="nav">
+                <a href="#books">Мои книги</a>
+                <a href="#add">Добавить книгу</a>
+                <a href="#statistics">Статистика</a>
+            </nav>
         </div>
-      </section>
-      <div class="books-layout">
-        <section id="books" class="panel">
-          <div class="between">
-            <h2>Моя книжная полка</h2>
-            <span id="books-count" class="count">0 книг</span>
-          </div>
-          <div class="filters book-filters">
-            <label
-              >Статус<select id="filter-status">
-                <option value="">Все книги</option>
-                <option value="reading">Читаю</option>
-                <option value="finished">Прочитано</option>
-                <option value="planned">Планирую</option>
-              </select></label
-            ><label
-              >Жанр<select id="filter-genre">
-                <option value="">Все жанры</option>
-              </select></label
-            ><label
-              >Порядок<select id="sort">
-                <option value="added">Сначала новые</option>
-                <option value="title">По названию</option>
-                <option value="author">По автору</option>
-                <option value="rating">По оценке</option>
-              </select></label
-            >
-          </div>
-          <div id="book-list" class="book-list"></div>
-          <div id="books-empty" class="empty">
-            Пока полка пуста.<br />Добавьте книгу, с которой начнётся ваша история.
-          </div>
-        </section>
-        <aside class="stack">
-          <section id="book-detail" class="panel">
-            <h2>Ближе к книге</h2>
-            <p id="detail-empty" class="muted">
-              Выберите книгу на полке, чтобы отметить прогресс, добавить заметку или цитату.
-            </p>
-            <div id="detail-content" hidden>
-              <p id="detail-genre" class="eyebrow"></p>
-              <h2 id="detail-title"></h2>
-              <p id="detail-author" class="muted"></p>
-              <div class="row" style="margin-bottom: 18px">
-                <span id="detail-status" class="pill"></span
-                ><span id="detail-rating" class="count"></span>
-              </div>
-              <label
-                >Статус<select id="detail-status-input">
-                  <option value="planned">Планирую</option>
-                  <option value="reading">Читаю</option>
-                  <option value="finished">Прочитано</option>
-                </select></label
-              ><label style="margin-top: 16px"
-                >Прочитано страниц<input
-                  id="progress-input"
-                  type="text"
-                  inputmode="numeric"
-                  aria-describedby="progress-error"
-              /></label>
-              <div id="progress-error" class="error" aria-live="polite"></div>
-              <div class="bar-track">
-                <div id="progress-bar" class="bar-fill" style="width: 0%"></div>
-              </div>
-              <p id="progress-text" class="hint" style="margin-top: 8px"></p>
-              <label
-                >Мои заметки<textarea
-                  id="note"
-                  rows="3"
-                  aria-describedby="note-error"
-                ></textarea>
-              </label>
-              <div id="note-error" class="error" aria-live="polite"></div>
-              <div class="row">
-                <button id="save-note" class="primary small">Сохранить заметку</button
-                ><span id="note-draft" class="count"></span>
-              </div>
-              <h3 style="margin-top: 25px">Любимые цитаты</h3>
-              <ul id="quote-list" class="quote-list"></ul>
-              <form id="quote-form" novalidate>
-                <label
-                  >Новая цитата<textarea
-                    id="quote"
-                    rows="2"
-                    placeholder="Строка, которую хочется запомнить"
-                  ></textarea>
+    </header>
+
+    <main>
+        <p id="book-notice" class="notice"></p>
+
+        <!-- раздел 1: список книг и подробная информация о выбранной книге -->
+        <section id="books" class="section">
+            <h2>Мои книги</h2>
+
+            <div class="filters">
+                <label>Статус
+                    <select id="filter-status">
+                        <option value="">Все</option>
+                        <option value="reading">Читаю</option>
+                        <option value="finished">Прочитано</option>
+                        <option value="planned">Планирую</option>
+                    </select>
                 </label>
-                <div id="quote-error" class="error" aria-live="polite"></div>
-                <button type="submit" class="small">Добавить цитату</button>
-              </form>
-              <button id="delete-book" class="quiet small danger" style="margin-top: 25px">
-                Удалить книгу
-              </button>
+                <label>Жанр
+                    <select id="filter-genre">
+                        <option value="">Все жанры</option>
+                    </select>
+                </label>
+                <label>Сортировка
+                    <select id="sort">
+                        <option value="added">По дате добавления</option>
+                        <option value="title">По названию</option>
+                        <option value="author">По автору</option>
+                        <option value="rating">По оценке</option>
+                    </select>
+                </label>
+                <span id="books-count" class="count"></span>
             </div>
-          </section>
-          <section class="panel">
-            <h2>Карта чтения</h2>
-            <p class="hint">Количество книг по жанрам на вашей полке.</p>
-            <div id="genre-chart" role="img" aria-label="Распределение книг по жанрам"></div>
-            <p id="genre-empty" class="muted">Здесь появятся ваши любимые жанры.</p>
-            <h3 style="margin-top: 24px">Общий прогресс</h3>
-            <div class="bar-track">
-              <div id="overall-progress" class="bar-fill" style="width: 0%"></div>
+
+            <div class="books-layout">
+                <div>
+                    <div id="book-list" class="book-list"></div>
+                    <p id="books-empty" class="empty">Список пуст. Добавьте первую книгу.</p>
+                </div>
+
+                <div id="book-detail" class="detail">
+                    <p id="detail-empty" class="muted">Нажмите на книгу в списке, чтобы открыть подробную информацию.</p>
+
+                    <div id="detail-content" hidden>
+                        <h3 id="detail-title"></h3>
+                        <p id="detail-author" class="muted"></p>
+                        <p><b>Жанр:</b> <span id="detail-genre"></span></p>
+                        <p><b>Страниц:</b> <span id="detail-pages"></span></p>
+                        <p><b>Оценка:</b> <span id="detail-rating"></span></p>
+                        <p><b>Добавлена:</b> <span id="detail-added"></span></p>
+
+                        <label for="detail-status-input">Статус</label>
+                        <select id="detail-status-input">
+                            <option value="planned">Планирую</option>
+                            <option value="reading">Читаю</option>
+                            <option value="finished">Прочитано</option>
+                        </select>
+
+                        <label for="progress-input">Прочитано страниц</label>
+                        <input id="progress-input" type="text" inputmode="numeric">
+                        <div id="progress-error" class="error"></div>
+                        <div class="progress">
+                            <div id="progress-bar" class="progress-fill"></div>
+                        </div>
+                        <p id="progress-text" class="small"></p>
+
+                        <h4>Заметки</h4>
+                        <textarea id="note" rows="4"></textarea>
+                        <div id="note-error" class="error"></div>
+                        <button id="save-note" type="button">Сохранить заметку</button>
+                        <span id="note-draft" class="small"></span>
+
+                        <h4>Любимые цитаты</h4>
+                        <ul id="quote-list" class="quotes"></ul>
+                        <form id="quote-form" novalidate>
+                            <textarea id="quote" rows="2" placeholder="Текст цитаты"></textarea>
+                            <div id="quote-error" class="error"></div>
+                            <button type="submit" class="secondary">Добавить цитату</button>
+                        </form>
+
+                        <button id="delete-book" type="button" class="delete">Удалить книгу</button>
+                    </div>
+                </div>
             </div>
-            <p id="overall-text" class="hint" style="margin-top: 8px">0 из 0 страниц</p>
-          </section>
-        </aside>
-      </div>
-      <section id="add" class="panel" style="margin-top: 24px">
-        <p class="eyebrow">Место для новой истории</p>
-        <h2>Добавить книгу</h2>
-        <form id="book-form" novalidate>
-          <div class="fields">
-            <label
-              >Название<input
-                id="title"
-                type="text"
-                placeholder="Маленький принц"
-                aria-describedby="title-error" />
-              <div id="title-error" class="error" aria-live="polite"></div></label
-            ><label
-              >Автор<input
-                id="author"
-                type="text"
-                placeholder="Антуан де Сент Экзюпери"
-                aria-describedby="author-error" />
-              <div id="author-error" class="error" aria-live="polite"></div></label
-            ><label
-              >Жанр<input
-                id="genre"
-                type="text"
-                list="genres"
-                placeholder="Повесть"
-                aria-describedby="genre-error" /><datalist id="genres">
-                <option value="Роман"></option>
-                <option value="Повесть"></option>
-                <option value="Фантастика"></option>
-                <option value="Научпоп"></option>
-                <option value="Поэзия"></option>
-              </datalist>
-              <div id="genre-error" class="error" aria-live="polite"></div></label
-            ><label
-              >Количество страниц<input
-                id="pages"
-                type="text"
-                inputmode="numeric"
-                placeholder="96"
-                aria-describedby="pages-error" />
-              <div id="pages-error" class="error" aria-live="polite"></div></label
-            ><label
-              >Статус<select id="status">
-                <option value="planned">Планирую</option>
-                <option value="reading">Читаю</option>
-                <option value="finished">Прочитано</option>
-              </select></label
-            ><label
-              >Оценка<select id="rating">
-                <option value="1">1 из 5</option>
-                <option value="2">2 из 5</option>
-                <option value="3" selected>3 из 5</option>
-                <option value="4">4 из 5</option>
-                <option value="5">5 из 5</option>
-              </select></label
-            ><label class="full"
-              >Заметки<textarea
-                id="notes"
-                rows="2"
-                placeholder="Что привлекло вас в этой книге"
-                aria-describedby="notes-error"
-              ></textarea>
-              <div id="notes-error" class="error" aria-live="polite"></div
-            ></label>
-          </div>
-          <div class="row">
-            <button class="primary" type="submit">Поставить на полку</button
-            ><button id="reset-book-form" type="button" class="quiet">Очистить форму</button>
-          </div>
-        </form>
-      </section>
-      <div id="book-notice" class="status-line" role="status"></div>
+        </section>
+
+        <!-- раздел 2: форма добавления книги -->
+        <section id="add" class="section" hidden>
+            <h2>Добавить книгу</h2>
+
+            <form id="book-form" class="book-form" novalidate>
+                <div class="field">
+                    <label for="title">Название</label>
+                    <input id="title" type="text" placeholder="Мастер и Маргарита">
+                    <div id="title-error" class="error"></div>
+                </div>
+                <div class="field">
+                    <label for="author">Автор</label>
+                    <input id="author" type="text" placeholder="Михаил Булгаков">
+                    <div id="author-error" class="error"></div>
+                </div>
+                <div class="field">
+                    <label for="genre">Жанр</label>
+                    <input id="genre" type="text" list="genres" placeholder="Роман">
+                    <datalist id="genres">
+                        <option value="Роман">
+                        <option value="Повесть">
+                        <option value="Фантастика">
+                        <option value="Детектив">
+                        <option value="Научпоп">
+                        <option value="Поэзия">
+                    </datalist>
+                    <div id="genre-error" class="error"></div>
+                </div>
+                <div class="field">
+                    <label for="pages">Количество страниц</label>
+                    <input id="pages" type="text" inputmode="numeric" placeholder="480">
+                    <div id="pages-error" class="error"></div>
+                </div>
+                <div class="field">
+                    <label for="status">Статус</label>
+                    <select id="status">
+                        <option value="planned">Планирую</option>
+                        <option value="reading">Читаю</option>
+                        <option value="finished">Прочитано</option>
+                    </select>
+                    <div id="status-error" class="error"></div>
+                </div>
+                <div class="field">
+                    <label for="rating">Оценка</label>
+                    <select id="rating">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <div id="rating-error" class="error"></div>
+                </div>
+                <div class="field wide">
+                    <label for="notes">Заметки</label>
+                    <textarea id="notes" rows="3"></textarea>
+                    <div id="notes-error" class="error"></div>
+                </div>
+                <div class="buttons wide">
+                    <button type="submit">Добавить</button>
+                    <button id="reset-book-form" type="button" class="secondary">Очистить</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- раздел 3: статистика -->
+        <section id="statistics" class="section" hidden>
+            <h2>Статистика</h2>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="pages-total">0</div>
+                    <div>прочитано страниц</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="books-year">0</div>
+                    <div>книг прочитано за <span id="stats-year"></span> год</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="average-rating">—</div>
+                    <div>средняя оценка</div>
+                </div>
+            </div>
+
+            <h3>Книги по жанрам</h3>
+            <div id="genre-chart" class="chart"></div>
+            <p id="genre-empty" class="muted">Пока нет книг.</p>
+
+            <h3>Общий прогресс</h3>
+            <div class="progress">
+                <div id="overall-progress" class="progress-fill"></div>
+            </div>
+            <p id="overall-text" class="small">0 из 0 страниц</p>
+        </section>
     </main>
-    <script src="app.js?v=20261026-single1"></script>
-  </body>
+
+    <script src="app.js"></script>
+</body>
 </html>

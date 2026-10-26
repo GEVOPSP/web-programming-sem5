@@ -4,89 +4,53 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Регистрация</title>
-    <link rel="stylesheet" href="../practice.css?v=20261026-single1" />
+    <link rel="stylesheet" href="../practice.css" />
   </head>
   <body class="practice pr2">
     <main class="registration">
       <h1>Регистрация</h1>
       <p class="club">Клуб настольных игр</p>
+      <!-- novalidate отключает встроенную проверку браузера, проверяет app.js -->
       <form id="registration" novalidate>
         <div class="field">
           <label for="fullName">ФИО</label>
-          <input
-            id="fullName"
-            type="text"
-            autocomplete="name"
-            placeholder="Фамилия Имя Отчество"
-            aria-describedby="fullName-help fullName-error"
-          />
-          <small id="fullName-help">Буквы и пробелы.</small>
-          <div id="fullName-error" class="error" aria-live="polite"></div>
+          <input id="fullName" type="text" autocomplete="name" placeholder="Фамилия Имя Отчество" />
+          <small>Буквы и пробелы.</small>
+          <div id="fullName-error" class="error"></div>
         </div>
         <div class="field">
           <label for="login">Логин</label>
-          <input
-            id="login"
-            type="text"
-            autocomplete="username"
-            aria-describedby="login-help login-error"
-          />
-          <small id="login-help"
-            >Латиница, оба регистра, от 15 знаков. Не меньше 3 цифр и спецсимвола.</small
-          >
-          <div id="login-error" class="error" aria-live="polite"></div>
+          <input id="login" type="text" autocomplete="username" />
+          <small>Латиница, строчные и заглавные буквы, не меньше 3 цифр и спецсимвол, от 15 знаков.</small>
+          <div id="login-error" class="error"></div>
         </div>
         <div class="field">
           <label for="email">Email</label>
-          <input
-            id="email"
-            type="text"
-            inputmode="email"
-            autocomplete="email"
-            placeholder="name@mail.ru"
-            aria-describedby="email-error"
-          />
-          <div id="email-error" class="error" aria-live="polite"></div>
+          <input id="email" type="text" autocomplete="email" placeholder="name@mail.ru" />
+          <div id="email-error" class="error"></div>
         </div>
         <div class="field">
           <label for="age">Возраст</label>
-          <input
-            id="age"
-            class="age"
-            type="text"
-            inputmode="numeric"
-            aria-describedby="age-help age-error"
-          />
-          <small id="age-help">Для участников от 18 лет.</small>
-          <div id="age-error" class="error" aria-live="polite"></div>
+          <input id="age" class="age" type="text" inputmode="numeric" />
+          <small>Для участников от 18 лет.</small>
+          <div id="age-error" class="error"></div>
         </div>
         <div class="field">
           <label for="password">Пароль</label>
           <div class="password-line">
-            <input
-              id="password"
-              type="password"
-              autocomplete="new-password"
-              aria-describedby="password-help password-error"
-            /><button
-              type="button"
-              id="show-password"
-              aria-label="Показать или скрыть пароль"
-              aria-pressed="false"
-            >
-              Показать
-            </button>
+            <input id="password" type="password" autocomplete="new-password" />
+            <button type="button" id="show-password">Показать</button>
           </div>
-          <small id="password-help">Как логин, только буквы кириллицей.</small>
-          <div id="password-error" class="error" aria-live="polite"></div>
+          <small>Как у логина, только буквы кириллицей. Спецсимволы: ! @ # $ % ^ &amp; * _ - . , ?</small>
+          <div id="password-error" class="error"></div>
         </div>
         <div class="form-buttons">
-          <button type="submit" class="submit">Зарегистрироваться</button
-          ><button type="button" id="reset-registration">Очистить</button>
+          <button type="submit" class="submit">Зарегистрироваться</button>
+          <button type="button" id="reset-registration">Очистить</button>
         </div>
-        <p id="result" class="status-line" role="status"></p>
+        <p id="result" class="status-line"></p>
       </form>
     </main>
-    <script src="app.js?v=20261026-single1"></script>
+    <script src="app.js"></script>
   </body>
 </html>

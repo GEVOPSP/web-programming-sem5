@@ -4,45 +4,49 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Открытки</title>
-    <link rel="stylesheet" href="../practice.css?v=20261026-single1" />
+    <link rel="stylesheet" href="../practice.css" />
   </head>
   <body class="practice pr4">
     <main class="cards-page">
       <h1>Сделать открытку</h1>
       <div class="card-maker">
         <form id="card-form" novalidate>
-          <label for="card-text">Поздравление</label>
-          <textarea id="card-text" rows="4" placeholder="Напиши что-нибудь хорошее"></textarea>
+          <label for="card-text">Текст</label>
+          <textarea id="card-text" rows="4" placeholder="Напиши поздравление"></textarea>
           <div class="names-row">
             <div>
-              <label for="card-from">От кого</label><input id="card-from" type="text" />
+              <label for="card-from">От кого</label>
+              <input id="card-from" type="text" />
             </div>
-            <div><label for="card-to">Кому</label><input id="card-to" type="text" /></div>
+            <div>
+              <label for="card-to">Кому</label>
+              <input id="card-to" type="text" />
+            </div>
           </div>
-          <label for="card-theme">Оформление</label>
+          <label for="card-theme">Тема</label>
           <select id="card-theme">
             <option value="linen">Светлая</option>
             <option value="night">Ночная</option>
             <option value="sunset">Розовая</option>
-            <option value="garden">Зелёная</option>
-            <option value="winter">Зимняя</option>
+            <option value="garden">Весенняя</option>
+            <option value="winter">Новогодняя</option>
           </select>
           <button id="send" type="submit" disabled>Отправить</button>
-          <p id="card-status" class="status-line" role="status"></p>
+          <p id="card-status" class="status-line"></p>
         </form>
         <div id="preview" class="postcard theme-linen">
-          <small id="preview-to">Кому</small>
+          <small id="preview-to">Кому: ...</small>
           <p id="preview-text">Текст поздравления</p>
-          <small id="preview-from">От кого</small>
+          <small id="preview-from">От: ...</small>
         </div>
       </div>
       <section class="saved-cards">
-        <h2>Сохранённые открытки <span id="history-count" class="count">0</span></h2>
+        <h2>История открыток <span id="history-count" class="count">0</span></h2>
         <button id="clear-history" class="clear">Очистить историю</button>
         <div id="history" class="postcard-history"></div>
         <p id="history-empty">Здесь пока пусто.</p>
       </section>
     </main>
-    <script src="app.js?v=20261026-single1"></script>
+    <script src="app.js"></script>
   </body>
 </html>
