@@ -1,0 +1,97 @@
+/* Оформление четырёх практических. У каждой своя тема, общая логика остаётся в app.js. */
+.practice{font-family:Arial,sans-serif;color:var(--ink);min-height:100vh}
+.practice .site-header{padding-top:22px;padding-bottom:20px}
+.practice .brand{font-size:15px;letter-spacing:0}
+.practice .back{font-size:13px}
+.practice main{padding-top:30px}
+.practice h1{font-size:32px;letter-spacing:-.6px;line-height:1.2}
+.practice h2{font-size:18px;letter-spacing:0}
+.practice .lead{font-size:14px;line-height:1.6;max-width:810px}
+.practice .page-heading{margin-bottom:24px}
+.practice .panel{border-radius:9px;padding:23px}
+.practice button,.practice input,.practice select,.practice textarea{border-radius:5px}
+.practice footer{padding-top:18px;font-size:12px}
+.practice .eyebrow{letter-spacing:1px}
+.practice :focus-visible{outline-color:var(--accent)}
+.practice .message{border-radius:0 5px 5px 0}
+/* Практическая 1 — поле с космическим маршрутом. */
+.pr1{--ink:#e4edf7;--muted:#a7b8cc;--bg:#101c2d;--paper:#16263a;--line:#334b65;--accent:#78b6dd;--soft:#223e58;background-color:var(--bg);background-image:radial-gradient(#afbedc66 .8px,transparent .8px),radial-gradient(#afbedc44 1px,transparent 1px);background-size:79px 83px,131px 139px;background-position:15px 0,60px 55px}
+.pr1 .site-header,.pr1 footer{border-color:#31445a}
+.pr1 .panel{background:#16263af5;border-color:#334b65}
+.pr1 button{background:#223b53;border-color:#42617e;color:#eaf2fb}
+.pr1 button.primary{background:#88bfdb;border-color:#88bfdb;color:#102638}
+.pr1 button.primary:hover{background:#acd7ee}
+.pr1 button:hover:not(:disabled){background:#304e69}
+.pr1 .token{background:#203a54;border-color:#4e6d88;color:#f5f7fc}
+.pr1 .token img{width:42px;height:42px;background:#07101b}
+.pr1 .token.selected{outline:2px solid #e7ca79}
+.pr1 .cell{background:#1b3048;border-color:#3c5671;border-radius:7px;min-height:134px}
+.pr1 .cell.special{background:#274463;border-color:#79a0c0}
+.pr1 .cell.goal{background:#254e44;border-color:#8bbd91}
+.pr1 .cell-number{color:#a8bed5}
+.pr1 .cell .token{background:#12283f}
+.pr1 .cell .token img{width:26px;height:26px}
+.pr1 .pill{background:#243f59;color:#c6e5f7;border-radius:5px}
+.pr1 .dice{background:#e6edf4;color:#20354b;border-radius:7px}
+.pr1 .game-grid{gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.pr1 .cell strong{overflow-wrap:anywhere}
+.pr1 [data-cell="4"]{grid-row:2;grid-column:4}.pr1 [data-cell="5"]{grid-row:2;grid-column:3}.pr1 [data-cell="6"]{grid-row:2;grid-column:2}.pr1 [data-cell="7"]{grid-row:2;grid-column:1}
+.pr1 [data-cell="8"]{grid-row:3;grid-column:1}.pr1 [data-cell="9"]{grid-row:3;grid-column:2}.pr1 [data-cell="10"]{grid-row:3;grid-column:3}.pr1 [data-cell="11"]{grid-row:3;grid-column:4}
+.pr1 .cell-number:after{content:'→';float:right;font-size:16px;color:#7899b9}
+.pr1 [data-cell="3"] .cell-number:after,.pr1 [data-cell="7"] .cell-number:after{content:'↓'}
+.pr1 [data-cell="4"] .cell-number:after,.pr1 [data-cell="5"] .cell-number:after,.pr1 [data-cell="6"] .cell-number:after{content:'←'}
+.pr1 [data-cell="11"] .cell-number:after{content:'✓';color:#abdbb1}
+.pr1 .active-player{font-size:13px;color:#e7ca79;margin-top:14px;min-height:20px}
+.pr1 .game-controls{margin-top:12px}
+.pr1 #shelf:empty:before{content:'Все фишки на поле. Перетащите фишку сюда, чтобы вернуть её.';font-size:13px;line-height:1.6;color:#a7b8cc;padding-top:15px}
+.pr1 .message{background:#243d56;border-color:#8abbdc}
+/* Практическая 2 — компактная регистрационная форма. */
+.pr2{--ink:#302e2a;--muted:#756f64;--bg:#efebe2;--line:#d5cdbf;--accent:#845441;--soft:#f1e5db;background:#efebe2}
+.pr2 main{max-width:760px;padding-bottom:40px}
+.pr2 .page-heading{max-width:660px;margin:0 auto 23px}
+.pr2 h1{font-family:Georgia,serif;font-size:32px}
+.pr2 .layout.wide{display:block}
+.pr2 .panel{max-width:660px;margin:auto;background:#fffefa;border:1px solid #d0c7b8;box-shadow:0 4px 14px #4b3d2410;border-radius:5px}
+.pr2 .fields{gap:12px 18px}
+.pr2 input{background:white;border-color:#bfb8ab}
+.pr2 button.primary{background:#845441;border-color:#845441}
+.pr2 button.primary:hover{background:#6e4230}
+.pr2 .error{margin-top:4px;min-height:16px;font-size:12px}
+.pr2 input[aria-invalid=false]{border-color:#63836e}
+.pr2 input[aria-invalid=true]{border-color:#b45544}
+.pr2 #reset-registration{color:#756f64;border:0;padding-left:0;font-weight:400}
+.pr2 .form-footnote{font-size:12px;color:#756f64;margin:15px 0 0;padding-top:14px;border-top:1px solid #e6ded1}
+/* Практическая 3 — бумажные заметки на доске. */
+.pr3{--ink:#303d32;--muted:#6d786e;--bg:#eeece3;--line:#d6d6c8;--accent:#42674e;--soft:#e2eadf;background:#eeece3}
+.pr3 h1{font-family:Georgia,serif}
+.pr3 button.primary{background:#42674e;border-color:#42674e}
+.pr3 button.primary:hover{background:#304f39}
+.pr3 .panel{border-color:#d1d0c1;background:#fffef9;border-radius:5px}
+.pr3 .pinboard{background-color:#d8bc8d;background-image:radial-gradient(#a47a4555 1px,transparent 1px),radial-gradient(#fff5dc77 1px,transparent 1px);background-position:0 0,4px 5px;background-size:9px 11px,13px 15px;border:9px solid #846846;border-radius:3px;box-shadow:inset 0 0 9px #61492944}
+.pr3 .pinboard-caption{color:#775c3c;line-height:1.6}
+.pr3 .sticker-tray{background:repeating-linear-gradient(transparent 0,transparent 29px,#e6e5dc 29px,#e6e5dc 30px);padding:10px;min-height:420px;border:1px solid #e2e0d3}
+.pr3 .sticker-tray:empty:before{content:'Новые стикеры появятся здесь';font-size:13px;line-height:1.6;color:#7a8076;padding:10px}
+.pr3 .sticker{border-radius:0 0 3px 0;flex-shrink:0;box-shadow:2px 4px 5px #4a3b262e;border:0;border-top:11px solid #ffffff22;color:#3c382b}
+.pr3 .sticker button{color:#685d48;font-size:18px;line-height:1.2;padding:0 6px;top:0}
+.pr3 .pinboard .sticker{max-height:330px}
+/* Практическая 4 — пять вариантов оформления самой открытки. */
+.pr4{--ink:#3e3940;--muted:#837983;--bg:#f4efeb;--line:#ded3cd;--accent:#9c5a5b;--soft:#f2e1df;background:#f4efeb}
+.pr4 h1{font-family:Georgia,serif}
+.pr4 button.primary{background:#9c5a5b;border-color:#9c5a5b}
+.pr4 button.primary:hover{background:#854749}
+.pr4 .panel{background:#fffcf9;border-color:#dfd4ce;border-radius:5px}
+.pr4 .postcard{min-height:270px;border-radius:2px;box-shadow:2px 4px 8px #47392c1f;padding:42px 30px 30px;font-family:Georgia,serif;border:1px solid #d7cdbf}
+.pr4 .postcard p{font-size:25px;line-height:1.45;min-height:60px;margin:20px 0;z-index:1}
+.pr4 .postcard small{font-family:Arial,sans-serif;z-index:1}
+.pr4 .postcard:after{content:'';position:absolute;right:17px;top:16px;width:32px;height:39px;border:2px dotted currentColor;opacity:.35;transform:rotate(8deg);pointer-events:none}
+.pr4 .theme-linen{background:#fffcf3;color:#574735;background-image:repeating-linear-gradient(0deg,#a2947510 0,#a2947510 1px,transparent 1px,transparent 4px)}
+.pr4 .theme-night{background:#263345;color:#eef0e4;border-color:#687789;background-image:radial-gradient(#fff5caaa 1px,transparent 1.5px);background-size:63px 59px}
+.pr4 .theme-sunset{background:#f6dbcf;color:#7e4c44;border:7px double #d0a397}
+.pr4 .theme-garden{background:#e7ebdc;color:#3e5a42;border-color:#a9b79c;border-left:12px solid #8eaa83}
+.pr4 .theme-garden:before{border:12px double #91a08055;width:150px;height:150px;right:-60px;bottom:-60px}
+.pr4 .theme-winter{background:#e7f1f5;color:#385c6d;border-color:#adc4d0}
+.pr4 .theme-winter:before{content:'✧  ·  ✧';font-family:Georgia,serif;color:#78a1b7;font-size:32px;right:75px;top:14px}
+.pr4 .history-item .postcard{padding-bottom:48px;min-height:250px}
+.pr4 .history-item>button{border-radius:3px;background:#fffaf4cc}
+@media(max-width:850px){.pr1 .token-shelf{min-height:80px}.pr1 .game-controls{grid-template-columns:minmax(0,1fr);align-items:center}.pr3 .sticker-tray{min-height:160px}.pr4 .layout.wide{grid-template-columns:1fr}}
+@media(max-width:540px){.practice h1{font-size:27px}.practice .site-header{padding-top:18px;padding-bottom:16px}.practice main{padding-top:24px}.practice .panel{padding:17px}.pr1 .cell{padding:9px 5px;min-height:128px}.pr1 .cell strong{font-size:10px}.pr1 .game-grid{gap:6px}.pr2 .row{align-items:stretch}.pr2 .row>button{flex:1;font-size:13px}.pr3 .sticker-tray{padding:9px;min-height:155px;gap:9px}.pr3 .pinboard{border-width:6px}.pr3 .sticker{width:160px}.pr4 .postcard{padding:39px 21px 24px}.pr4 .postcard p{font-size:23px}}

@@ -24,8 +24,8 @@ function persist(nextCards) {
 
 function preview() {
   document.getElementById('preview').className = `postcard theme-${themeInput.value}`;
-  document.getElementById('preview-text').textContent = textInput.value.trim() || 'Пара тёплых слов сделает день лучше.';
-  document.getElementById('preview-from').textContent = fromInput.value.trim() ? `От ${fromInput.value.trim()}` : 'С добрыми пожеланиями';
+  document.getElementById('preview-text').textContent = textInput.value.trim() || 'Текст поздравления';
+  document.getElementById('preview-from').textContent = fromInput.value.trim() ? `От ${fromInput.value.trim()}` : 'Отправитель';
   document.getElementById('preview-to').textContent = toInput.value.trim() ? `Для ${toInput.value.trim()}` : 'Для вас';
   document.getElementById('send').disabled = ![textInput, fromInput, toInput].every(input => input.value.trim());
 }
@@ -57,7 +57,10 @@ document.getElementById('card-form').addEventListener('submit', event => {
   renderHistory(); status.textContent = 'Открытка сохранена в коллекции.';
   textInput.value = ''; fromInput.value = ''; toInput.value = ''; preview();
 });
-document.getElementById('clear-history').addEventListener('click', () => { if (persist([])) { renderHistory(); status.textContent = 'Коллекция очищена.'; } });
+document.getElementById('clear-history').addEventListener('click', () => {
+  if (!confirm('Удалить все сохранённые открытки?')) return;
+  if (persist([])) { renderHistory(); status.textContent = 'История очищена.'; }
+});
 // Событие storage обновляет коллекцию в другой вкладке того же сайта.
 window.addEventListener('storage', event => { if (event.key === STORAGE_KEY || event.key === null) { cards = readCards(); renderHistory(); } });
 cards = readCards(); preview(); renderHistory();

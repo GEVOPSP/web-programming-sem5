@@ -26,12 +26,19 @@ function removeSticker(id) {
 function selectSticker(id) {
   selectedId = id;
   stickers.forEach(s => {
-    s.element.style.outline = s.id === id ? '2px solid #6550bd' : '';
+    s.element.style.outline = s.id === id ? '2px solid #42674e' : '';
     s.element.setAttribute('aria-pressed', String(s.id === id));
   });
 }
 
 // Координаты считаются относительно доски, с учётом точки захвата стикера.
+function fitSticker(sticker, x, y) {
+  sticker.x = Math.max(0, Math.min(x, board.clientWidth - sticker.element.offsetWidth));
+  sticker.y = Math.max(0, Math.min(y, board.clientHeight - sticker.element.offsetHeight));
+  sticker.element.style.left = `${sticker.x}px`;
+  sticker.element.style.top = `${sticker.y}px`;
+}
+
 function placeSticker(id, zone, x = 10, y = 10) {
   const sticker = stickers.find(s => s.id === id);
   if (!sticker) return;
@@ -39,10 +46,7 @@ function placeSticker(id, zone, x = 10, y = 10) {
   const target = zone === 'board' ? board : tray;
   target.append(sticker.element);
   if (zone === 'board') {
-    sticker.x = Math.max(0, Math.min(x, board.clientWidth - sticker.element.offsetWidth));
-    sticker.y = Math.max(0, Math.min(y, board.clientHeight - sticker.element.offsetHeight));
-    sticker.element.style.left = `${sticker.x}px`;
-    sticker.element.style.top = `${sticker.y}px`;
+    fitSticker(sticker, x, y);
     sticker.element.style.zIndex = ++topLayer;
   } else { sticker.element.style.left = ''; sticker.element.style.top = ''; sticker.element.style.zIndex = ''; }
   selectSticker(id); updateCounts();
@@ -52,6 +56,9 @@ function addSticker(text) {
   const id = String(nextId++);
   const element = document.createElement('article');
   element.className = 'sticker'; element.draggable = true; element.tabIndex = 0;
+  // Цвет относится к самому стикеру и сохраняется при переносе между полями.
+  const colors = ['#fff0aa', '#e8dbee', '#dce9cb'];
+  element.style.backgroundColor = colors[(Number(id) - 1) % colors.length];
   element.dataset.id = id; element.setAttribute('role', 'button'); element.setAttribute('aria-label', `Выбрать стикер: ${text}`);
   const content = document.createElement('span'); content.textContent = text;
   const remove = document.createElement('button'); remove.type = 'button'; remove.textContent = '×'; remove.setAttribute('aria-label', `Удалить стикер: ${text}`);
@@ -84,12 +91,15 @@ document.getElementById('sticker-form').addEventListener('submit', event => {
   zone.addEventListener('drop', event => {
     event.preventDefault(); zone.classList.remove('drag-over');
     const rect = board.getBoundingClientRect();
-    placeSticker(event.dataTransfer.getData('text/plain'), zone === board ? 'board' : 'tray', event.clientX - rect.left - dragOffset.x, event.clientY - rect.top - dragOffset.y);
+    placeSticker(event.dataTransfer.getData('text/plain'), zone === board ? 'board' : 'tray', event.clientX - rect.left - board.clientLeft - dragOffset.x, event.clientY - rect.top - board.clientTop - dragOffset.y);
   });
 });
 board.addEventListener('click', event => {
   if (event.target !== board) return;
-  const rect = board.getBoundingClientRect(); placeSticker(selectedId, 'board', event.clientX - rect.left - 85, event.clientY - rect.top - 35);
+  const sticker = stickers.find(s => s.id === selectedId);
+  if (!sticker) return;
+  const rect = board.getBoundingClientRect();
+  placeSticker(selectedId, 'board', event.clientX - rect.left - board.clientLeft - sticker.element.offsetWidth / 2, event.clientY - rect.top - board.clientTop - 35);
 });
 tray.addEventListener('click', event => { if (event.target === tray) placeSticker(selectedId, 'tray'); });
 function clearZone(zone) {
@@ -98,6 +108,14 @@ function clearZone(zone) {
 }
 document.getElementById('clear-tray').addEventListener('click', () => clearZone('tray'));
 document.getElementById('clear-board').addEventListener('click', () => clearZone('board'));
-window.addEventListener('resize', () => stickers.filter(s => s.zone === 'board').forEach(s => placeSticker(s.id, 'board', s.x, s.y)));
+// Ждём окончания изменения окна, чтобы промежуточная ширина не сдвинула все заметки.
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (board.clientWidth < 170) return;
+    stickers.filter(s => s.zone === 'board').forEach(s => fitSticker(s, s.x, s.y));
+  }, 120);
+});
 document.addEventListener('dragend', () => document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over')));
 updateCounts();

@@ -7,10 +7,10 @@ const players = [
   { id: 'saturn', name: 'Сатурн', image: 'saturn.jpg', cell: null, skip: false }
 ];
 const spaces = [
-  ['Космодром', 'start'], ['Первая орбита', ''], ['Попутный ветер · +2', 'forward'],
+  ['Космодром · старт', 'start'], ['Первая орбита', ''], ['Попутный ветер · +2', 'forward'],
   ['Метеорный поток', ''], ['Ремонт · пропуск хода', 'skip'], ['Тихий космос', ''],
   ['Солнечный ветер · −2', 'back'], ['Лунная станция', ''], ['Звёздный свет', ''],
-  ['Дальняя орбита', ''], ['Последний рывок', ''], ['Новая галактика', 'goal']
+  ['Дальняя орбита', ''], ['Последний рывок', ''], ['Новая галактика · финиш', 'goal']
 ];
 let selected = null;
 const board = document.getElementById('board');
@@ -19,6 +19,8 @@ const message = document.getElementById('event');
 
 function selectPlayer(id) {
   selected = id;
+  const player = players.find(p => p.id === id);
+  document.getElementById('active-player').textContent = player ? `Выбрана фишка: ${player.name}` : 'Фишка не выбрана';
   document.querySelectorAll('.token').forEach(token => {
     token.classList.toggle('selected', token.dataset.id === id);
     token.setAttribute('aria-pressed', String(token.dataset.id === id));
@@ -116,6 +118,11 @@ function move(id, index) {
 
 enableDrop(shelf, null);
 shelf.addEventListener('click', event => { if (event.target === shelf && selected) move(selected, null); });
+shelf.addEventListener('keydown', event => {
+  if (event.target === shelf && (event.key === 'Enter' || event.key === ' ')) {
+    event.preventDefault(); move(selected, null);
+  }
+});
 document.getElementById('roll').addEventListener('click', () => {
   const player = players.find(p => p.id === selected);
   if (!player) { message.textContent = 'Перед броском выберите фишку.'; return; }

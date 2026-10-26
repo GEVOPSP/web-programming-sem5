@@ -31,7 +31,19 @@ form.addEventListener('submit', event => {
   const results = Object.keys(rules).map(name => ({ name, valid: validateField(name) }));
   const invalid = results.find(result => !result.valid);
   if (invalid) { document.getElementById(invalid.name).focus(); document.getElementById('result').textContent = ''; return; }
-  document.getElementById('result').textContent = 'Все поля прошли проверку. Данные никуда не отправлены.';
+  document.getElementById('result').textContent = 'Все поля прошли проверку.';
+});
+document.getElementById('reset-registration').addEventListener('click', () => {
+  form.reset();
+  Object.keys(rules).forEach(name => {
+    document.getElementById(name).removeAttribute('aria-invalid');
+    document.getElementById(`${name}-error`).textContent = '';
+  });
+  document.getElementById('password').type = 'password';
+  document.getElementById('show-password').textContent = 'Показать пароль';
+  document.getElementById('show-password').setAttribute('aria-pressed', 'false');
+  document.getElementById('result').textContent = '';
+  document.getElementById('fullName').focus();
 });
 document.getElementById('show-password').addEventListener('click', event => {
   const password = document.getElementById('password');
